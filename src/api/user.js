@@ -1,5 +1,6 @@
 export default {
   loginCheck: '/login/userLogin',
   logout: '/login/sessionTimeout',
-  sessionCheck: '/login/sessionIsExists'
+  sessionCheck: '/login/sessionIsExists',
+  submitUserName:''
 }
