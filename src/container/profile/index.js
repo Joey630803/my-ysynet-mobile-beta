@@ -1,22 +1,50 @@
 import React, { Component } from 'react';
 import { NavBar, Icon, List, WhiteSpace, Badge } from 'antd-mobile';
+import { connect } from 'react-redux';
 import { hashHistory } from 'react-router';
 import Footer from '../../component/footer';
 import UserInfo from '../../component/user_info';
 import './style.css';
+
+import { onLoad } from '../../action';
+
 const Item = List.Item;
 
-const userInfo = {
-  avatar: require('../../assets/avatar.png'),
-  username: '萌萌的拖鞋酱',
-  extra: <p className={'phone'}><i></i><span>186****7725</span></p>
-}
+// const userInfo = {
+//   avatar: require('../../assets/avatar.png'),
+//   username: '萌萌的拖鞋酱',
+//   extra: <p className={'phone'}><i></i><span>186****7725</span></p>
+// }
 
 /**
  * @summary 用户模块
  */
+
 class User extends Component {
+  constructor(){
+    super()
+    this.state={
+      userInfo:{}
+    }
+  }
+  // state={
+  //   userInfo:{}
+  // }
+
+  componentWillMount(){
+  const onInforLoad=this.props.onInforLoad
+  // console.log(onInforLoad)
+    window.Fetch('/userInfo')
+    .then(res=>{
+      return res.json()
+    }).then(data=>{
+      onInforLoad(data)
+      // return this.setState({userInfo: data})
+    })
+  }
   render () {
+    const {user}=this.props
+    //console.log(user.username)
     return this.props.children || (
       <div>
         <NavBar
@@ -26,7 +54,10 @@ class User extends Component {
         >
           我的
         </NavBar>
-        <UserInfo data={userInfo} onClick={() => hashHistory.push({pathname: '/profile/user'})}/>
+        {/* <UserInfo data={this.state.userInfo} 
+        onClick={() => hashHistory.push({pathname: '/profile/user',state:this.state.userInfo})}/> */}
+        <UserInfo user={user}
+        onClick={() => hashHistory.push({pathname: '/profile/user'})}/>
         <WhiteSpace size='md' />
         <List className={'ysynet-userInfo'}>
           <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/address16x16.svg')} multipleLine>
@@ -63,4 +94,17 @@ class User extends Component {
   }
 }
 
-export default User;
+const mapStateToProps = (state)=>({
+  //username:state.user.username
+  user:state.user
+})
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onInforLoad: (data) => {
+      dispatch(onLoad.onLoad(data));
+    }
+  }
+}
+//export default User
+
+export default connect(mapStateToProps,mapDispatchToProps)(User);

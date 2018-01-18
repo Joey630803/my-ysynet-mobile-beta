@@ -3,5 +3,4 @@ export default {
     findDetailListByOrderId: '/order/findDetailListByOrderId',
     subtotalPackageByOrderId: '/delivery/package/subtotalPackageByOrderId',
     findPackageListByOrderId: '/delivery/package/findPackageListByOrderId',
-    findPackageListByOrderId: '/delivery/package/findPackageListByOrderId',
 }

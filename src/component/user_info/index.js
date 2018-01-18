@@ -6,14 +6,15 @@ import './style.css';
  */
 class UserInfo extends Component {
   render () {
-    const { data, onClick } = this.props;
+    const { user, onClick } = this.props;
+    //console.log(user)
     return (
       <section className={'ysynet-profile'} onClick={onClick}>
-        <img alt='用户头像' src={data.avatar}/>
+        <img alt='用户头像' src={user.avatar}/>
         <div className={'ysynet-profile-detail'}>
-          <p className={'name'}> { data.username } </p>
+          <p className={'name'}> { user.username } </p>
           {
-            data.extra
+            user.extra
           }
         </div>
         <span className={'next'}></span>
@@ -23,7 +24,7 @@ class UserInfo extends Component {
 }
 
 UserInfo.propTypes = {
-  data: PropTypes.object.isRequired,
+  //data: PropTypes.object.isRequired,
   onClick: PropTypes.func
 }
 

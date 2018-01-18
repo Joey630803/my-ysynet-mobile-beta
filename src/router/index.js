@@ -224,7 +224,7 @@ export const routes =  {
           path: '/profile/user',
           getComponent: (nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../container/profile/user').default)
+              cb(null, require('../container/profile/user2').default)
             }, 'profile/user')
           },
           childRoutes: [

@@ -10,16 +10,20 @@ const alert = Modal.alert;
 /**
  * @summary 用户详情
  */
-const userInfo = {
-  avatar: require('../../assets/avatar.png'),
-  username: '萌萌的拖鞋酱',
-  wechat: 18607107725,
-}
+// const userInfo = {
+//   avatar: require('../../assets/avatar.png'),
+//   username: '萌萌的拖鞋酱',
+//   wechat: 18607107725,
+// }
 
 class User extends Component{
-state={
-  imgUrl:''
-}
+  constructor(){
+    super()
+    
+    this.state={
+      imgUrl:'',
+    }
+  }
   upload = () => {
     const Input = this.refs.upload;
     Input.click();
@@ -80,6 +84,8 @@ state={
   }
   render(){
     const imageUrl = this.state.imageUrl;
+    const s=this.props.location.state;
+    console.log(s)
     return this.props.children || (
       <div>
         <NavBar
@@ -108,7 +114,7 @@ state={
 
           <List.Item 
           onClick={this.changeName} 
-          extra={userInfo.username}
+          extra={s.username}
           >
           用户名
           </List.Item>
@@ -133,8 +139,5 @@ state={
     )
   }
 }
-const mapStateToProps = (state) =>({
-  username:state.user
-})
 
-export default connect(mapStateToProps,null)(User);
+export default User
