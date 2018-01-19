@@ -13,9 +13,9 @@ class UserInfo extends Component {
         <img alt='用户头像' src={user.avatar}/>
         <div className={'ysynet-profile-detail'}>
           <p className={'name'}> { user.username } </p>
-          {
-            user.extra
-          }
+
+          <p className={'phone'}><i></i><span>{user.number}</span></p>
+
         </div>
         <span className={'next'}></span>
       </section>

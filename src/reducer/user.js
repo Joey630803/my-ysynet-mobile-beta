@@ -1,12 +1,15 @@
 //import { userAction } from '../action';
 import { updateUser } from '../action';
 import { updateHeadImg } from '../action';
+import { updateNumber } from '../action';
 import { onLoad } from '../action';
 
 //const { SET_USER } = userAction;
 const { UPDATE_USER } = updateUser;
 const { ON_LOAD } = onLoad;
-const { UPDATE_HEADIMG} = updateHeadImg;
+const { UPDATE_HEADIMG} = updateHeadImg
+
+const {UPDATE_NUMBER} = updateNumber
 
 const user = {}
 
@@ -32,6 +35,15 @@ export default (state = user, action) => {
         
       }
     }
+    case UPDATE_NUMBER:{
+
+      return {
+        ...state,
+        number:action.number,
+        
+      }
+    }
+    
     case ON_LOAD:{
       return {
         ...action.data

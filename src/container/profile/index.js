@@ -10,12 +10,6 @@ import { onLoad } from '../../action';
 
 const Item = List.Item;
 
-// const userInfo = {
-//   avatar: require('../../assets/avatar.png'),
-//   username: '萌萌的拖鞋酱',
-//   extra: <p className={'phone'}><i></i><span>186****7725</span></p>
-// }
-
 /**
  * @summary 用户模块
  */
@@ -33,18 +27,15 @@ class User extends Component {
 
   componentWillMount(){
   const onInforLoad=this.props.onInforLoad
-  // console.log(onInforLoad)
     window.Fetch('/userInfo')
     .then(res=>{
       return res.json()
     }).then(data=>{
       onInforLoad(data)
-      // return this.setState({userInfo: data})
     })
   }
   render () {
     const {user}=this.props
-    //console.log(user.username)
     return this.props.children || (
       <div>
         <NavBar

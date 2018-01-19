@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Icon, List, WhiteSpace, Modal } from 'antd-mobile';
+import { NavBar, Icon, List, WhiteSpace, Modal,Toast} from 'antd-mobile';
 import { connect } from 'react-redux';
 import {compressImage_jiu } from '../../utils';
 import { logout } from '../../utils';
@@ -61,6 +61,24 @@ reads=(fil)=>{
 changeName=()=>{
     hashHistory.push({pathname: '/profile/user/changename'})
   }
+unBind=()=>{
+
+    alert('','确定解绑微信吗？',[
+      { text: '取消', style: 'default' },
+          { text: '确定', onPress: () => 
+          window.Fetch('/user/unbindWechat')
+          .then(res=>{
+            //console.log(res)
+            return res.json()
+          }).then(data=>{
+            Toast.info(data.unbind);
+          })
+          }
+    ])
+  }
+changeNumber=()=>{
+  hashHistory.push({pathname: '/profile/user/changeNumber'})  
+}
 logoutClick = () => {
     alert('退出', '是否确认退出？', [
       { text: '取消', style: 'default' },
@@ -108,15 +126,26 @@ logoutClick = () => {
         >
         用户名
         </List.Item>
+        </List>
 
-        </List>
         <List renderHeader={() => '账号绑定'}>
-        <List.Item extra={<a>解绑</a>}>微信号</List.Item>
+        <List.Item extra={<a>解绑</a>}
+        onClick={this.unBind}
+        >微信号</List.Item>
         </List>
+
+        <List renderHeader={() => '手机号设置'}>
+        <List.Item extra={'修改手机号'}
+        onClick={this.changeNumber}
+        >手机号</List.Item>
+        </List>
+
         <List renderHeader={() => '安全设置'}>
         <List.Item extra={'修改密码'}>登录密码</List.Item>
         </List>
+
         <WhiteSpace size='xl' />
+
         <List>
         <List.Item 
           className={'ysynet-userInfo logout'}
@@ -125,6 +154,7 @@ logoutClick = () => {
           退出登录
         </List.Item>
       </List>  
+
   </div>
     )
   }

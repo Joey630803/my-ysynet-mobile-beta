@@ -237,6 +237,16 @@ export const routes =  {
                   cb(null, C)
                 }, '/profile/user/changename')
               }
+            },
+            { 
+              path: '/profile/user/changeNumber',
+              getComponent: (nextState, cb) => {
+                require.ensure([], (require) => {
+                  const C = require('../container/profile/changeNumber').default;
+                  //console.log(C)
+                  cb(null, C)
+                }, '/profile/user/changeNumber')
+              }
             }
           ]
         }
