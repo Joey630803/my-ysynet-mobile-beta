@@ -45,10 +45,20 @@ class ChangeUserName extends Component {
   onSubmit = (e) => {
     e.stopPropagation();
     this.props.form.validateFields((error, values) => {
+      let vals=values.newUserName
+      if(vals===undefined){
+        this.setState({
+          hasError: true,
+        });
+        Toast.info('用户名不能为空!');
+        return
+      }
       if (!error) {
-        let val=values.newUserName.trim()
-        //console.log()
+        let val=vals.trim()
+        
         if (val!=='') {
+
+          //let val=values.newUserName.trim()
 
           let len = 0;           
                          
@@ -113,8 +123,8 @@ class ChangeUserName extends Component {
                 });
                 Toast.info('如果字母数字组合，用户名必须2-15位!');
               }
-          //  手机号码11位验证  /^1\d{10}$/
-            }}
+            }
+        }
     });
   }
   onErrorClick = () => {
@@ -128,7 +138,9 @@ class ChangeUserName extends Component {
       this.setState({hasError:false})
     }
   }
-
+  onKeyUp=(e)=>{
+    e.target.value=e.target.value.replace(/\s/g,'');
+  }
   render () {
 
     const { getFieldProps } = this.props.form
@@ -149,11 +161,12 @@ class ChangeUserName extends Component {
           onFocus={this.onFocus}
           error={this.state.hasError}
           onErrorClick={this.onErrorClick}
-
+          onKeyUp={this.onKeyUp}
+          autoFocus="autoFocus"
               {...getFieldProps('newUserName', {
-                rules: [
-                  { required: true }
-                ]
+                // rules: [
+                //   { required: true }
+                // ]
               })}
               placeholder="修改用户名"
               clear

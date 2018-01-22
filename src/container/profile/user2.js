@@ -76,9 +76,15 @@ unBind=()=>{
           }
     ])
   }
+
 changeNumber=()=>{
   hashHistory.push({pathname: '/profile/user/changeNumber'})  
 }
+
+changePw=()=>{
+  hashHistory.push({pathname: '/profile/user/changePw'})  
+}
+
 logoutClick = () => {
     alert('退出', '是否确认退出？', [
       { text: '取消', style: 'default' },
@@ -141,7 +147,9 @@ logoutClick = () => {
         </List>
 
         <List renderHeader={() => '安全设置'}>
-        <List.Item extra={'修改密码'}>登录密码</List.Item>
+        <List.Item extra={'修改密码'}
+        onClick={this.changePw}
+        >登录密码</List.Item>
         </List>
 
         <WhiteSpace size='xl' />

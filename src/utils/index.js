@@ -8,7 +8,7 @@ import md5 from 'md5';
 import { User } from '../api';
 // 192.168.0.103:8686/ysynet-mobile/login/userLogin?userNo=30089&pwd=3e29d79c1e1d3deb3cfe5b6f90b065ad788154a6&token=vania
 const _remote = 'http://120.26.128.15:8905';//'http://192.168.0.183:80'
-
+// export const _local = 'http://192.168.0.100:8080/ysynet_mobile';
 /**
  * @summary fetch方法
  * @param {*} param0 

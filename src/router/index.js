@@ -229,13 +229,13 @@ export const routes =  {
           },
           childRoutes: [
             { 
-              path: '/profile/user/changename',
+              path: '/profile/user/changeName',
               getComponent: (nextState, cb) => {
                 require.ensure([], (require) => {
-                  const C = require('../container/profile/changename').default;
+                  const C = require('../container/profile/changeName').default;
                   //console.log(C)
                   cb(null, C)
-                }, '/profile/user/changename')
+                }, '/profile/user/changeName')
               }
             },
             { 
@@ -246,6 +246,16 @@ export const routes =  {
                   //console.log(C)
                   cb(null, C)
                 }, '/profile/user/changeNumber')
+              }
+            },
+            { 
+              path: '/profile/user/changePw',
+              getComponent: (nextState, cb) => {
+                require.ensure([], (require) => {
+                  const C = require('../container/profile/changePw').default;
+                  //console.log(C)
+                  cb(null, C)
+                }, '/profile/user/changePw')
               }
             }
           ]

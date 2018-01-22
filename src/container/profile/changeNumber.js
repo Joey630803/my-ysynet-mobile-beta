@@ -6,45 +6,57 @@ import {
   NavBar, 
   Icon, 
   WhiteSpace,
-  InputItem , 
   Button,
   WingBlank,
-  Modal,
   Toast
  } from 'antd-mobile';
 
 import { connect } from 'react-redux';
 import { updateNumber } from '../../action';
 
-const alert = Modal.alert;
-
-/**
- * @summary 修改用户名
- */
+/*修改用户名*/
 class ChangeUserNumber extends Component {
 
   state = {
-    hasError: false
+    hasError: false,
+    hasValue:false
     }
 
   onSubmit = (e) => {
     e.stopPropagation();
         let val=this.refs.node.value
         const pattern = /^1[3|4|5|7|8]\d{1}\s\d{4}\s\d{4}$/;
-        
+
+        // pattern.test(str);
+        if(val!==''){
           if(val.match(pattern)){
             this.props.changeNumber(val)
+            Toast.info('修改成功!')    
+            
             }else{
                 this.setState({
-                  hasError: true,
+                  hasError: true
                 });
-                Toast.info('手机格式不对!');
+                Toast.info('手机格式不对!')
+                
             }
+        }else{
+          this.setState({
+            hasError: true
+          });
+          Toast.info('还没填写哦!')    
+        }
   }
+componentDidMount(){
+  this.refs.node.focus()
+}
 
-  // const pattern = /^1[3|4|5|7|8]\d{1}\s\d{4}\s\d{4}$/;
-  // pattern.test(str);
+onFocus=()=>{
+    if (this.state.hasError) {
+      this.setState({hasError:false})
+    }
 
+}
 
 onKeyUp=(e)=>{
 
@@ -52,6 +64,7 @@ onKeyUp=(e)=>{
   
   let inputValue
     if (mValue !==''){
+      this.setState({hasValue:true})
 
     let mLength = mValue.length;
     if(mLength<=3){
@@ -63,60 +76,43 @@ onKeyUp=(e)=>{
         inputValue=mValue.substring(0, 3) + ' ' + mValue.substring(3, 7) + ' ' + mValue.substring(7, 11)
       }
   }
+}else{
+  this.setState({hasValue:false})
 }
 inputValue?this.refs.node.value=inputValue:this.refs.node.value=null
 }
 
-// onKeyUp=(e)=>{
-//   // if(e.target.value.match(/（[^\d]|[^\s]）/)){
-//   //   console.log('您输入的是非数字！')
-//   //  }
-// e.target.value=e.target.value.replace(/\D[^\s]/g,'')
-  
-//   const E=e.target.value.trim()
-//   let end = e.target.selectionEnd
-//   let st = e.target.selectionStart
-//   //const node = this.refs.nod
-
-//   if(E!==''){
-//     if(st===3||end===3){
-
-//       e.target.value=E+' '
-
-//       //e.target.setSelectionRange(3,3)
-
-//     }else if(st===8||end===8){
-
-//       e.target.value=E+' '
-  
-//     }
-//   }
-//     else{
-//       e.target.value=''
-//   }
-
-//   //删除设置
-//   if (e.keyCode === 8) {
-//     if(end===9){
-//       e.target.selectionEnd=8
-//       //e.target.setSelectionRange(8)
-//     }
-//     // if(st===9){
-//     //   e.target.selectionStart=8
-//     // }
-//     if(end===4){
-//       e.target.selectionEnd=3
-//       //e.target.selectionStart=3
-//     }
-//     // if(st===4){
-//     //   e.target.selectionStart=3
-//     // }
-//     //e.target.value=e.target.value.trim()
-//   }
-// }
+errorClick=()=>{
+  Toast.info('手机格式不对!')
+}
+backClick=(e)=>{
+  console.log(this.refs.inputClear.className)
+  //this.refs.inputClear.className='input-clear-avtive'
+  //this.refs.inputClear.classnames.join('input-clear-avtive')
+  //console.log(e.classname)
+  this.refs.node.value=''
+  this.setState({hasValue:false})
+}
   render () {
+    const block={
+      display:'block'
+    }
+    const none={
+      display:'none'
+    }
+    const red={
+      color:'red'
+    }
+    const black={
+      color:'black'
+    }
 
-    const { getFieldProps } = this.props.form
+    const errorDiv=this.state.hasError?
+    <div className="input-error-extra" onClick={this.errorClick}></div>
+    :null;
+    const backDiv=this.state.hasValue?
+    <div className='input-clear' ref="inputClear" style={this.state.hasError?none:block} onClick={this.backClick}></div>
+    :null;
 
     return (
       <div>
@@ -129,17 +125,27 @@ inputValue?this.refs.node.value=inputValue:this.refs.node.value=null
         </NavBar>
 
         <WhiteSpace size='md' />
-          {/* <InputItem
-            {...getFieldProps('phone')}
-            type="phone"
-            placeholder="186 1234 1234"
-          >手机号码</InputItem> */}
-          <input
-          onKeyUp={this.onKeyUp}
-          ref="node"
-          maxLength="13"
-          placeholder="修改手机号"
-            />
+
+          <div className="list-item">
+            <div className="list-line">
+              <div className="input-control">
+
+                <input
+                onKeyUp={this.onKeyUp}
+                onFocus={this.onFocus}
+                style={this.state.hasError?red:black}
+                ref="node"
+                maxLength="13"
+                placeholder="修改手机号"/>
+
+              </div>
+              {backDiv}
+              {errorDiv}
+            </div>
+          </div>
+
+
+
         <WingBlank className="my_button">
           <Button type="primary" onClick={this.onSubmit}>保存</Button><WhiteSpace />
         </WingBlank>
