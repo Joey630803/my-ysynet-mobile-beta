@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { submitUserName } from '../../utils';
 import { hashHistory } from 'react-router';
 import { createForm } from 'rc-form';
 import {
@@ -9,7 +8,6 @@ import {
   InputItem , 
   Button,
   WingBlank,
-  Modal,
   Toast
  } from 'antd-mobile';
 
@@ -17,7 +15,6 @@ import { connect } from 'react-redux';
 
 import { updateUser } from '../../action';
 
-const alert = Modal.alert;
 
 /**
  * @summary 修改用户名
@@ -134,7 +131,6 @@ class ChangeUserName extends Component {
   }
   onFocus=(value)=>{
     if (this.state.hasError) {
-      const {hasError}=this.state
       this.setState({hasError:false})
     }
   }

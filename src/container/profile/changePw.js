@@ -15,52 +15,94 @@ import { connect } from 'react-redux';
 import { updateNumber } from '../../action';
 
 /*修改用户名*/
-class ChangeUserNumber extends Component {
+class ChangePw extends Component {
 
   state = {
-    hasError: false,
+    hasError:[false,false,false],
     hasValue:[false,false,false],
-    pw:null
+    pw:null,
+    check:false
     }
 
-  onSubmit = (e) => {
-    e.stopPropagation();
-        let val=this.refs.node.value
-        //const pattern = /^[a-zA-Z0-9]{6,10}$/;
-        const pattern =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
-        
-        if(val!==''){
-          if(val.match(pattern)){
+  onSubmit = () => {
+    //e.stopPropagation();
+        let old=this.refs.old.value
+        let news=this.refs.new.value
+        let confirm=this.refs.confirm.value
 
-            this.setState({pw:val})
-            Toast.info('修改成功!')
-            
+        let hasError=this.state.hasError
+
+        const pattern =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
+          if(old===''){
+            hasError[0]=true
+            this.setState({hasError})
+            Toast.info('必须输入旧密码!')
+            return
+          }
+          if(news===''){
+            hasError[1]=true
+            this.setState({hasError})
+            Toast.info('新密码不能为空!')
+            return
+          }else{
+            if(news.match(pattern)){
+              hasError[1]=false
+              this.setState({hasError})
+              }else{
+  
+                hasError[1]=true
+                this.setState({hasError})
+                Toast.info('新密码必须是6-16位之间，数字和字母的组合!')
+                return
+              }
+          }
+          if(confirm===''){
+            hasError[2]=true
+            this.setState({hasError})
+            Toast.info('确认新密码不能为空!')
+            return
+          }else{
+            if(confirm===news){
+              this.setState({pw:confirm})
+              Toast.info('修改成功!')
             }else{
-                this.setState({
-                  hasError: true
-                });
-                Toast.info('密码必须是6-16位之间，数字和字母的组合!')
+              hasError[2]=true
+              this.setState({hasError})
+              Toast.info('两次输入不一样!')  
             }
-        }else{
-          this.setState({
-            hasError: true
-          });
-          Toast.info('还没填写哦!')    
-        }
+          }
   }
 
-onFocus=()=>{
+  onFocus=(e)=>{
+  const key=e.target.dataset.index
+  let hasError=this.state.hasError
+  
     if (this.state.hasError) {
       this.setState({hasError:false})
     }
+    if(key==='0'){
+        
+      hasError[0]=false
+      this.setState({hasError})
+    } 
+    if(key==='1'){
+        
+      hasError[1]=false
+      this.setState({hasError})
+    } 
+    if(key==='2'){
+        
+      hasError[2]=false
+      this.setState({hasError})
+    } 
 
 }
 
 onKeyUp=(e)=>{
 const key=e.target.dataset.index
 
-  const mValue=e.target.value.replace(/\s/g,'');
-  
+  const mValue=e.target.value.replace(/[^A-Za-z0-9]/g,'');
+
     if (mValue!==''){
       
       let hasValue=this.state.hasValue
@@ -81,8 +123,15 @@ const key=e.target.dataset.index
     }
     e.target.value=mValue
 }
-errorClick=()=>{
-  Toast.info('手机格式不对!')
+errorClick=(e)=>{
+  const key=e.target.dataset.index
+  
+  if(key==='0'){
+    Toast.info('必须输入旧密码!')
+    
+  }else{
+    Toast.info('密码格式不对!') 
+  }
 }
 backClick=(e)=>{
   const key=e.target.dataset.index
@@ -97,12 +146,18 @@ backClick=(e)=>{
     hasValue[1]=false
     this.setState({hasValue})
   }else{
-    this.refs.node.value=''
+    this.refs.confirm.value=''
     hasValue[2]=false
     this.setState({hasValue})
   }
 }
-
+check=()=>{
+  if(this.refs.check.checked===true){
+    this.setState({check:true})
+  }else{
+    this.setState({check:false})
+  }
+}
   render () {
     const block={
       display:'block'
@@ -117,20 +172,31 @@ backClick=(e)=>{
       color:'black'
     }
 
-    const errorDiv=this.state.hasError?
-    <div className="input-error-extra" onClick={this.errorClick}></div>
+
+    const errorDiv0=this.state.hasError[0]?
+    <div className="input-error-extra" onClick={this.errorClick} data-index={0}></div>
     :null;
 
+    const errorDiv1=this.state.hasError[1]?
+    <div className="input-error-extra" onClick={this.errorClick} data-index={1}></div>
+    :null;
+
+    const errorDiv2=this.state.hasError[2]?
+    <div className="input-error-extra" onClick={this.errorClick} data-index={2}></div>
+    :null;
+
+
+
     const backDiv0=this.state.hasValue[0]?
-    <div className="input-clear" style={this.state.hasError?none:block} onClick={this.backClick} data-index={0}></div>
+    <div className="input-clear" style={this.state.hasError[0]?none:block} onClick={this.backClick} data-index={0}></div>
     :null;
 
     const backDiv1=this.state.hasValue[1]?
-    <div className="input-clear" style={this.state.hasError?none:block} onClick={this.backClick} data-index={1}></div>
+    <div className="input-clear" style={this.state.hasError[1]?none:block} onClick={this.backClick} data-index={1}></div>
     :null; 
 
     const backDiv2=this.state.hasValue[2]?
-    <div className="input-clear" style={this.state.hasError?none:block} onClick={this.backClick} data-index={2}></div>
+    <div className="input-clear" style={this.state.hasError[2]?none:block} onClick={this.backClick} data-index={2}></div>
     :null;
 
     return (
@@ -150,11 +216,11 @@ backClick=(e)=>{
               <div className="input-control">
 
                 <input
-                type="password"
+                type={this.state.check?'text':'password'}
                 data-index={0}
                 onKeyUp={this.onKeyUp}
                 onFocus={this.onFocus}
-                style={this.state.hasError?red:black}
+                style={this.state.hasError[0]?red:black}
                 maxLength="16"
                 autoFocus="autoFocus"
                 ref="old"
@@ -163,7 +229,7 @@ backClick=(e)=>{
               </div>
               {backDiv0}
               
-              {errorDiv}
+              {errorDiv0}
             </div>
           </div>
 
@@ -174,20 +240,19 @@ backClick=(e)=>{
               <div className="input-control">
 
                 <input
-                type="password"
+                type={this.state.check?'text':'password'}
                 data-index={1}
                 
                 onKeyUp={this.onKeyUp}
                 onFocus={this.onFocus}
-                style={this.state.hasError?red:black}
+                style={this.state.hasError[1]?red:black}
                 maxLength="16"
-                autoFocus="autoFocus"
                 ref="new"
                 placeholder="新密码"/>
 
               </div>
               {backDiv1}
-              {errorDiv}
+              {errorDiv1}
             </div>
           </div>
 
@@ -196,27 +261,27 @@ backClick=(e)=>{
           <div className="list-item">
             <div className="list-line">
               <div className="input-control">
-
                 <input
-                type="password"
+                type={this.state.check?'text':'password'}
                 data-index={2}
-                
                 onKeyUp={this.onKeyUp}
                 onFocus={this.onFocus}
-                style={this.state.hasError?red:black}
+                style={this.state.hasError[2]?red:black}
                 maxLength="16"
-                autoFocus="autoFocus"
-                ref="node"
+                ref="confirm"
                 placeholder="确认新密码"/>
-
               </div>
               {backDiv2}
-              {errorDiv}
+              {errorDiv2}
             </div>
           </div>
 
+          <WhiteSpace size='md' />
 
-
+        <WingBlank className="check_this">
+          <input type="checkbox" ref="check" onClick={this.check}/>
+          <span>显示密码</span>
+        </WingBlank>
         <WingBlank className="my_button">
           <Button type="primary" onClick={this.onSubmit}>保存</Button><WhiteSpace />
         </WingBlank>
@@ -233,8 +298,8 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ChangeUserNumberss = createForm()(ChangeUserNumber)
-const ChangeUserNumbers=connect(null,mapDispatchToProps)(ChangeUserNumberss)
-export default ChangeUserNumbers
+const ChangePws = createForm()(ChangePw)
+const ChangePwss=connect(null,mapDispatchToProps)(ChangePws)
+export default ChangePwss
 
 

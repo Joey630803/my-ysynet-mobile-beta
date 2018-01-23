@@ -220,6 +220,14 @@ export const routes =  {
         next();
       },
       childRoutes: [
+        {
+          path: '/profile/institution',
+          getComponent: (nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../container/profile/institution').default)
+            }, 'profile/institution')
+          }
+        },
         { 
           path: '/profile/user',
           getComponent: (nextState, cb) => {

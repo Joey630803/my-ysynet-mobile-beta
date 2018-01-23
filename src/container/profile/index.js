@@ -25,7 +25,7 @@ class User extends Component {
   //   userInfo:{}
   // }
 
-  componentWillMount(){
+  componentDidMount(){
   const onInforLoad=this.props.onInforLoad
     window.Fetch('/userInfo')
     .then(res=>{
@@ -57,8 +57,9 @@ class User extends Component {
         </List>
         <WhiteSpace size='md' />
         <List className={'ysynet-userInfo'}>
-          <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
-            医院
+          <Item arrow="horizontal" 
+        onClick={()=>hashHistory.push({pathname:'/profile/institution'})} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
+            我的机构
           </Item>
           <Item 
             arrow="horizontal" 

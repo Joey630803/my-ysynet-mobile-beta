@@ -109,3 +109,15 @@
   color: #bbbbbb;
    
   }
+
+
+.check_this input{
+  width: 15px;
+  height:15px;
+  vertical-align: middle;
+  
+}
+.check_this span{
+  font-size:14px;
+  vertical-align: middle;
+}
