@@ -7,8 +7,7 @@ import sha1 from 'sha1';
 import md5 from 'md5';
 import { User } from '../api';
 // 192.168.0.103:8686/ysynet-mobile/login/userLogin?userNo=30089&pwd=3e29d79c1e1d3deb3cfe5b6f90b065ad788154a6&token=vania
-const _remote = 'http://120.26.128.15:8905';//'http://192.168.0.183:80'
-// export const _local = 'http://192.168.0.100:8080/ysynet_mobile';
+
 /**
  * @summary fetch方法
  * @param {*} param0 
@@ -23,7 +22,7 @@ export const fetchData = ({
   url, body, success, error, method, type
 }) => {
   const query = typeof body === 'object' ? JSON.stringify(body) : body;
-  fetch(`${_remote}${url}`, {
+  fetch(`${url}`, {
     method: method || 'post',
     credentials: 'include',
     mode: 'cors',
@@ -140,41 +139,16 @@ export const compressImage = (imageFile, callback) => {
     return image;  
   }
 }
-
-/*jiu图片压缩*/
-
-export const compressImage_jiu = (result, callback) => {
-    const fileType = result.type;
-    let image = new Image();
-    image.src = result;  
-    image.onload = function(){  //创建一个image对象，给canvas绘制使用  
-      let cvs = document.createElement('canvas');  
-      var scale = 1;    
-      if(this.width > 500 || this.height > 500){  //800只是示例，可以根据具体的要求去设定    
-        if(this.width > this.height){    
-          scale = 500 / this.width;  
-        }else{    
-          scale = 500 / this.height;    
-        }    
-      }  
-      cvs.width = this.width * scale;    
-      cvs.height = this.height * scale;     //计算等比缩小后图片宽高  
-      let ctx = cvs.getContext('2d');    
-      ctx.drawImage(this, 0, 0, cvs.width, cvs.height);  
-      let newImageData = cvs.toDataURL(fileType, 0.8);   //重新生成图片，<span style="font-family: Arial, Helvetica, sans-serif;">fileType为用户选择的图片类型</span>  
-      callback(newImageData);
-    }
-    return image;
-  }
-
-/*jiu_submitUserName*/
-
-// export const submitUserName = (newName) => {
-//   return new Promise((resolve, reject) => {
-//     fetchData({
-//       url: `${User.submitUserName}?newName=${newName}`,
-//       error: err => reject(err),
-//       success:null
-//     })  
-//   })
-// }
+/**
+ * jsonNull 判断
+ */
+export const jsonNull =function(obj){
+  for(var key in obj) { 
+      if(JSON.stringify(obj[key])==="null") {
+          obj[key] = "";
+      } else if (typeof obj[key] ==="object") {
+          obj[key] = jsonNull(obj[key]);
+      }
+   }
+   return obj;
+}
