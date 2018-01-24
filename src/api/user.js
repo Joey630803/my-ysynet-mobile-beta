@@ -3,6 +3,9 @@ export default {
   loginCheck: `${_local}/login/userLogin`,
   logout: `${_local}/login/sessionTimeout`,
   sessionCheck: `${_local}/login/sessionIsExists`,
+  unbind:`${_local}/user/unbindWechat`, //微信解绑
+  updateUser:`${_local}/user/updateUser`, //修改用户信息
+
   GETUSERINFO: `${_local}/login/getUserInfo`,//获取用户信息
   //地址模块
   FINDADDRSBYUSER: `${_local}/storage/findAddrsByUser`,//查询库房列表

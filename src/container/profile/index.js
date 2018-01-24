@@ -9,7 +9,7 @@ import './style.css';
 import { onLoad } from '../../action';
 import { fetchData } from '../../utils';
 //import querystring from 'querystring';
-import {User,_Local } from '../../api';
+import {User} from '../../api';
 const Item = List.Item;
 
 /**
@@ -28,31 +28,27 @@ class Userinfor extends Component {
   // }
 
   componentDidMount(){
+  const onInforLoad=this.props.onInforLoad
+    
     fetchData({
       url:`${User.GETUSERINFO}`,
       //body:querystring.stringify({ code: value}),
       success: data=>{
-        console.log(data)
+        //data.result
+
+        onInforLoad(data.result)
+        //console.log(data.result.userId)
+        //console.log(data.result.userName)
         
         if(data.status && data.result==='success'){
           console.log(data)
         }
-        
+      
       },
       err: err =>{
         console.log('不正确')
       }
     })
-
-
-  // const onInforLoad=this.props.onInforLoad
-  
-  //   window.Fetch('/userInfo')
-  //   .then(res=>{
-  //     return res.json()
-  //   }).then(data=>{
-  //     onInforLoad(data)
-  //   })
 }
   render () {
     const {user}=this.props

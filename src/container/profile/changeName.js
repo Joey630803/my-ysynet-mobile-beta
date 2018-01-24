@@ -15,6 +15,12 @@ import { connect } from 'react-redux';
 
 import { updateUser } from '../../action';
 
+import { fetchData } from '../../utils/index';
+
+import {User} from '../../api';
+
+import querystring from 'querystring';
+
 
 /**
  * @summary 修改用户名
@@ -22,7 +28,8 @@ import { updateUser } from '../../action';
 class ChangeUserName extends Component {
 
   state = {
-    hasError: false
+    hasError: false,
+    qualified:false
   }
   getEntrylen=(val)=>{
     var len = 0;
@@ -40,8 +47,13 @@ class ChangeUserName extends Component {
     return len;
   }
   onSubmit = (e) => {
-    e.stopPropagation();
-    this.props.form.validateFields((error, values) => {
+    e.stopPropagation()
+
+    //const qualified=this.state.qualified
+    
+    const vf=this.props.form.validateFields
+    let oio
+    vf((error, values) => {
       let vals=values.newUserName
       if(vals===undefined){
         this.setState({
@@ -54,8 +66,6 @@ class ChangeUserName extends Component {
         let val=vals.trim()
         
         if (val!=='') {
-
-          //let val=values.newUserName.trim()
 
           let len = 0;           
                          
@@ -74,15 +84,15 @@ class ChangeUserName extends Component {
           const hanzi = /^[\u4e00-\u9fa5]+$/
           const regname=/^[a-zA-Z0-9]{2,15}$/
           
-
           if(han.test(val)){
             if(val.match(hanzi)){            
               if(2<len&&len<30){
-                this.props.setUser(val);
+                //this.props.setUser(val);
                 this.setState({
                   hasError: false,
                 });
                 hashHistory.push({pathname: '/profile/user'})
+                oio=val
 
               }else{
 
@@ -93,11 +103,13 @@ class ChangeUserName extends Component {
               }
             }
             else if(2<len&&len<15){
-              this.props.setUser(val);
+              //this.props.setUser(val);
+              
               this.setState({
                 hasError: false,
               });
               hashHistory.push({pathname: '/profile/user'})
+              oio=val
             }
             else{
               
@@ -108,12 +120,14 @@ class ChangeUserName extends Component {
             }
           }
             else if(val.match(regname)){
-              this.props.setUser(val);
+              //this.props.setUser(val);
+              
               this.setState({
                 hasError: false,
               });
               hashHistory.push({pathname: '/profile/user'})
-
+              oio=val
+              
             }else{
                 this.setState({
                   hasError: true,
@@ -122,7 +136,21 @@ class ChangeUserName extends Component {
               }
             }
         }
-    });
+    })
+      
+      const userid=this.props.location.state.userId
+
+      fetchData({
+        url:`${User.updateUser}`,
+        body:querystring.stringify({userName:oio,userId:userid}),
+        success:data=>{
+          console.log(data)
+        },
+        err:err=>{
+          console.log(err)
+        }
+      })
+
   }
   onErrorClick = () => {
     if (this.state.hasError) {
@@ -136,11 +164,18 @@ class ChangeUserName extends Component {
   }
   onKeyUp=(e)=>{
     e.target.value=e.target.value.replace(/\s/g,'');
+    //e.target.setSelectionRange(0,4)
+    //changeCursorPos
   }
+  // componentDidMount(){
+  //   //this.selectionStart=3
+  //   console.log(this.refs.node)
+  // }
   render () {
 
     const { getFieldProps } = this.props.form
-
+    const userName=this.props.location.state.userName
+//console.log(userName)
     return (
       <div>
         <NavBar
@@ -158,7 +193,9 @@ class ChangeUserName extends Component {
           error={this.state.hasError}
           onErrorClick={this.onErrorClick}
           onKeyUp={this.onKeyUp}
-          autoFocus="autoFocus"
+          defaultValue={userName}
+          ref={node=>this.textInput=node}
+          //autoFocus="autoFocus"
               {...getFieldProps('newUserName', {
                 // rules: [
                 //   { required: true }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { NavBar, Icon, List, WhiteSpace, Modal,Toast} from 'antd-mobile';
 import { connect } from 'react-redux';
-import {compressImage_jiu } from '../../utils';
+import {compressImage_jiu,fetchData} from '../../utils';
 import { logout } from '../../utils';
 import { hashHistory } from 'react-router';
 import { updateHeadImg } from '../../action';
+import {User} from '../../api';
 
 const alert = Modal.alert;
 /**
@@ -58,24 +59,32 @@ reads=(fil)=>{
     }
   }
   
-changeName=()=>{
-    hashHistory.push({pathname: '/profile/user/changename'})
-  }
+
 unBind=()=>{
 
     alert('','确定解绑微信吗？',[
       { text: '取消', style: 'default' },
           { text: '确定', onPress: () => 
-          window.Fetch('/user/unbindWechat')
-          .then(res=>{
-            //console.log(res)
-            return res.json()
-          }).then(data=>{
-            Toast.info(data.unbind);
+
+          fetchData({
+            url:`${User.unbind}`,
+            success: data=>{
+              if(data){
+                Toast.info('解绑成功！');
+              }   
+            },
+            err: err =>{
+              console.log('不正确')
+            }
           })
+
           }
     ])
   }
+
+changeName=()=>{
+    hashHistory.push({pathname: '/profile/user/changename',state:this.props.user})
+}
 
 changeNumber=()=>{
   hashHistory.push({pathname: '/profile/user/changeNumber'})  
@@ -101,7 +110,6 @@ logoutClick = () => {
   }
   render(){
     const {user}=this.props
-    //console.log(user.avatar)
     return this.props.children ||(
       <div>
       <NavBar
@@ -128,7 +136,7 @@ logoutClick = () => {
 
         <List.Item 
         onClick={this.changeName} 
-        extra={user.username}
+        extra={user.userName}
         >
         用户名
         </List.Item>

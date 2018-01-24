@@ -16,23 +16,22 @@ class UserInfo extends Component {
   }
 componentWillReceiveProps(nextProps){
   const {onClick,user}=nextProps
-  // const {avatar,username,number}=user
-  // const reg = /^(\d{3})\d{4}(\d{4})$/;
+  const {userNo,userName,mobilePhone}=user
+  const reg = /^(\d{3})\d{4}(\d{4})$/;
 
-  // const tel = number.replace(reg, "$1****$2")
-
-  // const newOne={onClick,user:{avatar,username,tel}}
-
-  // this.setState({User:newOne})
-  this.setState({User:nextProps})
+  const tel = mobilePhone.replace(reg, "$1****$2")
+  user.tel=tel
+  const newOne={onClick,user}
+  this.setState({User:newOne})
+  //this.setState({User:nextProps})
 }
   render () {
     const {user,onClick}=this.state.User
     return (
       <section className={'ysynet-profile'} onClick={onClick}>
-        <img alt='用户头像' src={user.avatar}/>
+        <img alt='用户头像' src={user.userNo}/>
         <div className={'ysynet-profile-detail'}>
-          <p className={'name'}> {user.username } </p>
+          <p className={'name'}> {user.userName } </p>
           <p className={'phone'}><i></i><span>{user.tel}</span></p>
         </div>
         <span className={'next'}></span>

@@ -23,7 +23,7 @@ export default (state = user, action) => {
 
       return {
         ...state,
-        username:action.text,
+        userName:action.text,
         
       }
     }
@@ -39,8 +39,7 @@ export default (state = user, action) => {
 
       return {
         ...state,
-        number:action.number,
-        
+        mobilePhone:action.number,
       }
     }
     
