@@ -13,7 +13,7 @@ import {User,_Local } from '../../api';
 const Item = List.Item;
 
 /**
- * @summary 用户模块
+ * @summary 用户模块 30089 999999
  */
 
 class Userinfor extends Component {
