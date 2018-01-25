@@ -37,7 +37,7 @@ class Userinfor extends Component {
         //data.result
 
         onInforLoad(data.result)
-        //console.log(data.result.userId)
+        console.log(data.result)
         //console.log(data.result.userName)
         
         if(data.status && data.result==='success'){

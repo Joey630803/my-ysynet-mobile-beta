@@ -87,7 +87,7 @@ changeName=()=>{
 }
 
 changeNumber=()=>{
-  hashHistory.push({pathname: '/profile/user/changeNumber'})  
+  hashHistory.push({pathname: '/profile/user/changeNumber',state:this.props.user})  
 }
 
 changePw=()=>{

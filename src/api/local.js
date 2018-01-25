@@ -1,4 +1,4 @@
 
 //export const _local = 'http://120.26.128.15:8905'; //开发
 
-export const _local = 'http://192.168.0.101:8080/ysynet_mobile'; //本地开发 30089  999999
+export const _local = 'http://192.168.0.106:8080/ysynet_mobile'; //本地开发 30089  999999

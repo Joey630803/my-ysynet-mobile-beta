@@ -5,6 +5,7 @@ import {
   NavBar, 
   Icon, 
   WhiteSpace,
+  List,
   InputItem , 
   Button,
   WingBlank,
@@ -48,9 +49,6 @@ class ChangeUserName extends Component {
   }
   onSubmit = (e) => {
     e.stopPropagation()
-
-    //const qualified=this.state.qualified
-    
     const vf=this.props.form.validateFields
     let oio
     vf((error, values) => {
@@ -150,14 +148,13 @@ class ChangeUserName extends Component {
           console.log(err)
         }
       })
-
   }
   onErrorClick = () => {
     if (this.state.hasError) {
       Toast.info('用户名必须2-15位!');
     }
   }
-  onFocus=(value)=>{
+  onFocus=(e)=>{
     if (this.state.hasError) {
       this.setState({hasError:false})
     }
@@ -166,16 +163,35 @@ class ChangeUserName extends Component {
     e.target.value=e.target.value.replace(/\s/g,'');
     //e.target.setSelectionRange(0,4)
     //changeCursorPos
+    //this.setSelectionRange(vLen,vLen)
+    //this.setSelectionRange(12,12)
   }
   // componentDidMount(){
-  //   //this.selectionStart=3
-  //   console.log(this.refs.node)
+  //   console.log(this.state.inputRef.refs.input)
+  //   //console.log(this.refs.nameNode.value)
+  //   this.props.form.setFieldsInitialValue(
+  //     (error, values) => {
+  //       this.props.form.newUserName
+  //     }
+  //     )
+
+  //   console.log(this.props.form)
   // }
+  // componentDidMount() {
+  //     //console.log(inputRef)
+  //     console.log(this.refs.inputRef.refs.input)
+  //     const input = this.inputRef.refs.input
+
+  //     input.focus()
+  //     input.setSelectionRange(0, input.value.length);
+    
+  // }
+
+
   render () {
 
     const { getFieldProps } = this.props.form
     const userName=this.props.location.state.userName
-//console.log(userName)
     return (
       <div>
         <NavBar
@@ -187,25 +203,28 @@ class ChangeUserName extends Component {
         </NavBar>
 
         <WhiteSpace size='md' />
-
+<List>
           <InputItem
           onFocus={this.onFocus}
           error={this.state.hasError}
           onErrorClick={this.onErrorClick}
           onKeyUp={this.onKeyUp}
-          defaultValue={userName}
-          ref={node=>this.textInput=node}
-          //autoFocus="autoFocus"
-              {...getFieldProps('newUserName', {
+          //defaultValue={userName}
+          
+          autoFocus="autoFocus"
+              {...getFieldProps('newUserName', 
                 // rules: [
                 //   { required: true }
                 // ]
-              })}
+                //{ref:c => inputRef = c}
+                {initialValue:userName}
+              )}
               placeholder="修改用户名"
               clear
               moneyKeyboardAlign="left"
               // onBlur={(v) => {console.log(v)}}
             />
+</List>
         <WingBlank className="my_button">
           <Button type="primary" onClick={this.onSubmit}>保存</Button><WhiteSpace />
         </WingBlank>

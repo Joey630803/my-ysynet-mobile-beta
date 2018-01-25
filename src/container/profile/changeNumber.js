@@ -14,6 +14,12 @@ import {
 import { connect } from 'react-redux';
 import { updateNumber } from '../../action';
 
+import { fetchData } from '../../utils/index';
+
+import {User} from '../../api';
+
+import querystring from 'querystring';
+
 /*修改用户名*/
 class ChangeUserNumber extends Component {
 
@@ -26,13 +32,13 @@ class ChangeUserNumber extends Component {
     e.stopPropagation();
         let val=this.refs.node.value
         const pattern = /^1[3|4|5|7|8]\d{1}\s\d{4}\s\d{4}$/;
-
+        let oio
         // pattern.test(str);
         if(val!==''){
           if(val.match(pattern)){
             this.props.changeNumber(val)
             Toast.info('修改成功!')    
-            
+            oio=val
             }else{
                 this.setState({
                   hasError: true
@@ -46,10 +52,20 @@ class ChangeUserNumber extends Component {
           });
           Toast.info('还没填写哦!')    
         }
+
+    const userid=this.props.location.state.userId
+
+    fetchData({
+      url:`${User.updateUser}`,
+      body:querystring.stringify({mobilePhone:oio,userId:userid}),
+      success:data=>{
+        console.log(data)
+      },
+      err:err=>{
+        console.log(err)
+      }
+    })
   }
-componentDidMount(){
-  this.refs.node.focus()
-}
 
 onFocus=()=>{
     if (this.state.hasError) {
@@ -89,10 +105,19 @@ backClick=(e)=>{
   console.log(this.refs.inputClear.className)
   //this.refs.inputClear.className='input-clear-avtive'
   //this.refs.inputClear.classnames.join('input-clear-avtive')
-  //console.log(e.classname)
   this.refs.node.value=''
   this.setState({hasValue:false})
 }
+
+componentDidMount() {
+    const input =this.refs.node
+    input.focus()
+    console.log(input.selectionEnd)
+    input.setSelectionRange(0, input.value.length);
+    //input.selectionEnd=5
+  
+}
+
   render () {
     const block={
       display:'block'
@@ -113,6 +138,8 @@ backClick=(e)=>{
     const backDiv=this.state.hasValue?
     <div className='input-clear' ref="inputClear" style={this.state.hasError?none:block} onClick={this.backClick}></div>
     :null;
+
+    const mobilePhone=this.props.location.state.mobilePhone
 
     return (
       <div>
@@ -136,7 +163,11 @@ backClick=(e)=>{
                 style={this.state.hasError?red:black}
                 ref="node"
                 maxLength="13"
-                placeholder="修改手机号"/>
+                placeholder="修改手机号"
+                defaultValue={mobilePhone}
+                autoFocus="autoFocus"
+
+                />
 
               </div>
               {backDiv}
