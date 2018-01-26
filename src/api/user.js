@@ -5,6 +5,7 @@ export default {
   sessionCheck: `${_local}/login/sessionIsExists`,
   unbind:`${_local}/user/unbindWechat`, //微信解绑
   updateUser:`${_local}/user/updateUser`, //修改用户信息
+  modifyUserPwd:`${_local}/user/modifyUserPwd`, //修改密码
 
   GETUSERINFO: `${_local}/login/getUserInfo`,//获取用户信息
   //地址模块

@@ -14,6 +14,12 @@ import {
 import { connect } from 'react-redux';
 import { updateNumber } from '../../action';
 
+import { fetchData } from '../../utils/index';
+
+import {User} from '../../api';
+
+import querystring from 'querystring';
+
 /*修改用户名*/
 class ChangePw extends Component {
 
@@ -29,7 +35,7 @@ class ChangePw extends Component {
         let old=this.refs.old.value
         let news=this.refs.new.value
         let confirm=this.refs.confirm.value
-
+let confirmpass
         let hasError=this.state.hasError
 
         const pattern =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
@@ -65,12 +71,25 @@ class ChangePw extends Component {
             if(confirm===news){
               this.setState({pw:confirm})
               Toast.info('修改成功!')
+              confirmpass=confirm
             }else{
               hasError[2]=true
               this.setState({hasError})
               Toast.info('两次输入不一样!')  
             }
           }
+
+          fetchData({
+            url:`${User.modifyUserPwd}`,
+            body:querystring.stringify({oldPwd:old,newPwd:confirmpass}),
+            success:data=>{
+              console.log(data)
+            },
+            err:err=>{
+              console.log(err)
+            }
+          })
+
   }
 
   onFocus=(e)=>{
@@ -290,16 +309,7 @@ check=()=>{
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeNumber: (number) => {
-      dispatch(updateNumber.updateNumber(number));
-    }
-  }
-}
-
 const ChangePws = createForm()(ChangePw)
-const ChangePwss=connect(null,mapDispatchToProps)(ChangePws)
-export default ChangePwss
+export default ChangePws
 
 
