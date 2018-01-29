@@ -11,8 +11,6 @@ import {
   Toast
  } from 'antd-mobile';
 
-import { connect } from 'react-redux';
-import { updateNumber } from '../../action';
 
 import { fetchData } from '../../utils/index';
 
@@ -89,7 +87,6 @@ let confirmpass
               console.log(err)
             }
           })
-
   }
 
   onFocus=(e)=>{

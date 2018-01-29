@@ -19,5 +19,5 @@ export default {
   // 消息模块
   GETMYMESSAGELIST: `${_local}/messageController/getMessageList`,//我的消息列表
   UPDATEMSGREADFSTATE: `${_local}/messageController/changeMessageReadfstate`,//消息已读未读状态更改
-
+  
 }

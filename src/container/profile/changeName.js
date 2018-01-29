@@ -80,7 +80,8 @@ class ChangeUserName extends Component {
 
           const han = /[\u4e00-\u9fa5]/
           const hanzi = /^[\u4e00-\u9fa5]+$/
-          const regname=/^[a-zA-Z0-9]{2,15}$/
+          // const regname=/^[a-zA-Z0-9]{2,15}$/
+          const regname=/^[a-zA-Z\d]\w{3,11}[a-zA-Z\d]$/
           
           if(han.test(val)){
             if(val.match(hanzi)){            
@@ -142,7 +143,7 @@ class ChangeUserName extends Component {
         url:`${User.updateUser}`,
         body:querystring.stringify({userName:oio,userId:userid}),
         success:data=>{
-          console.log(data)
+          //console.log(data)
         },
         err:err=>{
           console.log(err)
@@ -160,7 +161,8 @@ class ChangeUserName extends Component {
     }
   }
   onKeyUp=(e)=>{
-    e.target.value=e.target.value.replace(/\s/g,'');
+    // e.target.value=e.target.value.replace(/\s/g,'');
+    e.target.value=e.target.value.replace(/^\s+$/g,'');
     //e.target.setSelectionRange(0,4)
     //changeCursorPos
     //this.setSelectionRange(vLen,vLen)

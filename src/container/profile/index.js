@@ -40,9 +40,9 @@ class Userinfor extends Component {
         console.log(data.result)
         //console.log(data.result.userName)
         
-        if(data.status && data.result==='success'){
-          console.log(data)
-        }
+        // if(data.status && data.result==='success'){
+        //   console.log(data)
+        // }
       
       },
       err: err =>{
@@ -74,7 +74,7 @@ class Userinfor extends Component {
         <WhiteSpace size='md' />
         <List className={'ysynet-userInfo'}>
           <Item arrow="horizontal" 
-        onClick={()=>hashHistory.push({pathname:'/profile/institution'})} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
+        onClick={()=>hashHistory.push({pathname:'/profile/institution',state:user})} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
             我的机构
           </Item>
           <Item 

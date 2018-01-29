@@ -29,6 +29,9 @@ class ChangeUserNumber extends Component {
     }
 
   onSubmit = (e) => {
+
+    const mobilePhone=this.props.location.state.mobilePhone
+    
     e.stopPropagation();
         let val=this.refs.node.value
         const pattern = /^1[3|4|5|7|8]\d{1}\s\d{4}\s\d{4}$/;
@@ -36,9 +39,13 @@ class ChangeUserNumber extends Component {
         // pattern.test(str);
         if(val!==''){
           if(val.match(pattern)){
+            if(val!==mobilePhone){
             this.props.changeNumber(val)
             Toast.info('修改成功!')    
             oio=val
+          }else{
+            Toast.info('您就没改啊!')
+          }
             }else{
                 this.setState({
                   hasError: true
@@ -59,7 +66,7 @@ class ChangeUserNumber extends Component {
       url:`${User.updateUser}`,
       body:querystring.stringify({mobilePhone:oio,userId:userid}),
       success:data=>{
-        console.log(data)
+        //console.log(data)
       },
       err:err=>{
         console.log(err)
@@ -102,8 +109,7 @@ errorClick=()=>{
   Toast.info('手机格式不对!')
 }
 backClick=(e)=>{
-  console.log(this.refs.inputClear.className)
-  //this.refs.inputClear.className='input-clear-avtive'
+  //console.log(this.refs.inputClear.className)
   //this.refs.inputClear.classnames.join('input-clear-avtive')
   this.refs.node.value=''
   this.setState({hasValue:false})
@@ -112,10 +118,8 @@ backClick=(e)=>{
 componentDidMount() {
     const input =this.refs.node
     input.focus()
-    console.log(input.selectionEnd)
     input.setSelectionRange(0, input.value.length);
     //input.selectionEnd=5
-  
 }
 
   render () {

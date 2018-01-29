@@ -6,8 +6,11 @@ import { logout } from '../../utils';
 import { hashHistory } from 'react-router';
 import { updateHeadImg } from '../../action';
 import {User} from '../../api';
+import querystring from 'querystring';
 
 const alert = Modal.alert;
+
+
 /**
  * @summary user从状态树获取用户数据方式
  */
@@ -61,13 +64,18 @@ reads=(fil)=>{
   
 
 unBind=()=>{
-
+  const {user}=this.props
+  if(user.wechatOpenid===null){
+    Toast.info('您就没绑过微信!')
+  }else{
+    console.log("有微信")
     alert('','确定解绑微信吗？',[
       { text: '取消', style: 'default' },
           { text: '确定', onPress: () => 
-
+        
           fetchData({
             url:`${User.unbind}`,
+            body:querystring.stringify({wechatOpenid:user.wechatOpenid}),
             success: data=>{
               if(data){
                 Toast.info('解绑成功！');
@@ -77,9 +85,9 @@ unBind=()=>{
               console.log('不正确')
             }
           })
-
           }
     ])
+  }
   }
 
 changeName=()=>{
@@ -177,7 +185,6 @@ logoutClick = () => {
 }
 
 const mapStateToProps = (state)=>({
-  //username:state.user.username
   user:state.user
 })
 //window.onload=console.log(mapStateToProps.state)

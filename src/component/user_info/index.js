@@ -15,15 +15,14 @@ class UserInfo extends Component {
     }
   }
 componentWillReceiveProps(nextProps){
-  const {onClick,user}=nextProps
-  const {userNo,userName,mobilePhone}=user
-  const reg = /^(\d{3})\d{4}(\d{4})$/;
 
-  const tel = mobilePhone.replace(reg, "$1****$2")
-  user.tel=tel
+  const {onClick,user}=nextProps
+  const {mobilePhone}=user 
+  let str = mobilePhone.substr(0,3)+"****"+mobilePhone.substr(8)
+  user.tel=str
   const newOne={onClick,user}
   this.setState({User:newOne})
-  //this.setState({User:nextProps})
+
 }
   render () {
     const {user,onClick}=this.state.User
