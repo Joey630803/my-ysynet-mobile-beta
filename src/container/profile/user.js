@@ -65,6 +65,7 @@ reads=(fil)=>{
 
 unBind=()=>{
   const {user}=this.props
+  console.log(user)
   if(user.wechatOpenid===null){
     Toast.info('您就没绑过微信!')
   }else{

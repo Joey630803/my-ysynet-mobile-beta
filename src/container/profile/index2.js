@@ -1,32 +1,31 @@
 import React, { Component } from 'react';
-import { NavBar, Icon, List, WhiteSpace, Badge ,Toast} from 'antd-mobile';
-import { connect } from 'react-redux';
+import { NavBar, Icon, List, WhiteSpace, Badge,Toast } from 'antd-mobile';
+import { onLoad } from '../../action';
+
 import { hashHistory } from 'react-router';
+import { connect } from 'react-redux';
+
 import Footer from '../../component/footer';
 import UserInfo from '../../component/user_info';
-import './style.css';
-
-import { onLoad } from '../../action';
 import { fetchData } from '../../utils';
-//import querystring from 'querystring';
-import {User} from '../../api';
+import { User } from '../../api';
+import './style.css';
 const Item = List.Item;
 
-/**
- * @summary 用户模块 30089 999999
- */
+const userInfo = {
+  avatar: require('../../assets/avatar.png'),
+  username: '萌萌的拖鞋酱',
+  extra: <p className={'phone'}><i></i><span>186****7725</span></p>
+}
 
-class Userinfor extends Component {
-  constructor(){
-    super()
-    this.state={
-        userInfo: '',
-        unreadMessage: 0
-    }
+/**
+ * @summary 用户模块
+ */
+class MyUser extends Component {
+  state = {
+    userInfo: '',
+    unreadMessage: 0
   }
-  // state={
-  //   userInfo:{}
-  // }
   componentWillMount = ()=>{
     this.getUserInfo();
   }
@@ -41,20 +40,15 @@ class Userinfor extends Component {
 
     fetchData({
       url: User.GETUSERINFO,
-
+      err: err=>console.log(err,'err'),
       success: data=>{
-        // console.log(data.result)
-        
-        onInforLoad(data.result)
         if(data.status){
           this.setState({ userInfo:data.result,unreadMessage:data.result.unreadMessage });
-          
-          
+          onInforLoad(data.result)
         }else{
           Toast.fail(data.msg);
         }
-      },
-      err: err=>console.log(err,'err')
+      } 
     })
   }
   render () {
@@ -68,19 +62,17 @@ class Userinfor extends Component {
         >
           我的
         </NavBar>
-        <UserInfo user={user}
-        onClick={() => hashHistory.push({pathname: '/profile/user'})}/>
+        <UserInfo user={user} onClick={() => hashHistory.push({pathname: '/profile/user'})}/>
         <WhiteSpace size='md' />
         <List className={'ysynet-userInfo'}>
-        <Item arrow="horizontal" onClick={() => hashHistory.push({pathname:'/profile/address'})} thumb={require('../../assets/address16x16.svg')} multipleLine>
-          我的地址
-        </Item>
+          <Item arrow="horizontal" onClick={() => hashHistory.push({pathname:'/profile/address'})} thumb={require('../../assets/address16x16.svg')} multipleLine>
+            我的地址
+          </Item>
         </List>
         <WhiteSpace size='md' />
         <List className={'ysynet-userInfo'}>
-          <Item arrow="horizontal" 
-        onClick={()=>hashHistory.push({pathname:'/profile/institution',state:user})} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
-            我的机构
+          <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/hospital16x16.svg')} multipleLine>
+            医院
           </Item>
           <Item 
             arrow="horizontal" 
@@ -94,18 +86,19 @@ class Userinfor extends Component {
           <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/data16x16.svg')} multipleLine>
             资料
           </Item>
-          </List>
-          <WhiteSpace size='md' />
-          <List className={'ysynet-userInfo'}>
-            <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/setting16x16.svg')} multipleLine>
-              设置
-            </Item>
-          </List>
-          <Footer active={'profile'}/>
+        </List>
+        <WhiteSpace size='md' />
+        <List className={'ysynet-userInfo'}>
+          <Item arrow="horizontal" onClick={() => {}} thumb={require('../../assets/setting16x16.svg')} multipleLine>
+            设置
+          </Item>
+        </List>
+        <Footer active={'profile'}/>
       </div> 
     ) 
   }
 }
+
 
 const mapStateToProps = (state)=>({
   //username:state.user.username
@@ -118,6 +111,6 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-//export default User
 
-export default connect(mapStateToProps,mapDispatchToProps)(Userinfor);
+
+export default connect(mapStateToProps,mapDispatchToProps)(MyUser);

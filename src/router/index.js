@@ -221,21 +221,11 @@ export const routes =  {
         require.ensure([], (require) => {
           cb(null, require('../container/profile').default)
         }, 'profile')
-        //console.log(nextState.routes)
-        // nextState指路由全部、并添加了当前的路由和子路由
       },
       onEnter: (nextState, replace, next) => {
         next();
       },
       childRoutes: [
-        {
-          path: '/profile/institution',
-          getComponent: (nextState, cb) => {
-            require.ensure([], (require) => {
-              cb(null, require('../container/profile/institution').default)
-            }, 'profile/institution')
-          }
-        },
         { 
           path: '/profile/user',
           getComponent: (nextState, cb) => {
@@ -244,38 +234,99 @@ export const routes =  {
             }, 'profile/user')
           },
           childRoutes: [
-            { 
-              path: '/profile/user/changeName',
+            {
+              path: '/profile/institution',
               getComponent: (nextState, cb) => {
                 require.ensure([], (require) => {
-                  const C = require('../container/profile/changeName').default;
-                  //console.log(C)
-                  cb(null, C)
-                }, '/profile/user/changeName')
+                  cb(null, require('../container/profile/institution').default)
+                }, 'profile/institution')
               }
             },
             { 
-              path: '/profile/user/changeNumber',
+              path: '/profile/user',
               getComponent: (nextState, cb) => {
                 require.ensure([], (require) => {
-                  const C = require('../container/profile/changeNumber').default;
-                  //console.log(C)
-                  cb(null, C)
-                }, '/profile/user/changeNumber')
-              }
-            },
-            { 
-              path: '/profile/user/changePw',
-              getComponent: (nextState, cb) => {
-                require.ensure([], (require) => {
-                  const C = require('../container/profile/changePw').default;
-                  //console.log(C)
-                  cb(null, C)
-                }, '/profile/user/changePw')
-              }
+                  cb(null, require('../container/profile/user').default)
+                }, 'profile/user')
+              },
+              childRoutes: [
+                { 
+                  path: '/profile/user/changeName',
+                  getComponent: (nextState, cb) => {
+                    require.ensure([], (require) => {
+                      const C = require('../container/profile/changeName').default;
+                      //console.log(C)
+                      cb(null, C)
+                    }, '/profile/user/changeName')
+                  }
+                },
+                { 
+                  path: '/profile/user/changeNumber',
+                  getComponent: (nextState, cb) => {
+                    require.ensure([], (require) => {
+                      const C = require('../container/profile/changeNumber').default;
+                      //console.log(C)
+                      cb(null, C)
+                    }, '/profile/user/changeNumber')
+                  }
+                },
+                { 
+                  path: '/profile/user/changePw',
+                  getComponent: (nextState, cb) => {
+                    require.ensure([], (require) => {
+                      const C = require('../container/profile/changePw').default;
+                      //console.log(C)
+                      cb(null, C)
+                    }, '/profile/user/changePw')
+                  }
+                }
+              ]
             }
-          ]
-        }
+          ] 
+        },
+        //地址
+        {
+          path: '/profile/address',
+          getComponent: (nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../container/profile/address/').default)
+            }, 'profile/address')
+          }
+        },
+        {
+          path: '/profile/EditAddr',
+          getComponent: (nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../container/profile/address/edit').default)
+            }, 'profile/EditAddr')
+          }
+        },
+        {
+          path: '/profile/newAdd',
+          getComponent: (nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../container/profile/address/add').default)
+            }, 'profile/newAdd')
+          }
+        },
+        //消息
+        { 
+          path: '/profile/message',
+          getComponent: (nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../container/profile/message/').default)
+            }, 'profile/message')
+          },
+          childRoutes: [
+            {
+              path: '/profile/message/show',
+              getComponent: (nextState, cb) => {
+              require.ensure([], (require) => {
+                cb(null, require('../container/profile/message/show').default)
+              }, 'profile/message/show')
+            }
+          }]
+        },
       ]  
     },
     {
